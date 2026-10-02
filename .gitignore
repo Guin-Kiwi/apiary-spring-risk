@@ -44,6 +44,7 @@ coverage.xml
 *.log
 *.db
 *.sqlite3
+/data/
 
 # IDE and tool state
 .idea/

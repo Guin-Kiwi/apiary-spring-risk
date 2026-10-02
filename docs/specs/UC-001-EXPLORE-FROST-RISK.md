@@ -138,8 +138,11 @@ actual results.
 
 ## Open questions / assumptions
 
-- Open: public source of hive or apiary counts per canton (prototype used
-  placeholder URLs).
+- Resolved (DEVELOP): colonies per canton from Agroscope Transfer 528
+  (2022, © Agroscope, parsed at run time); flowering dates from MeteoSwiss
+  phenology open data (CC BY).
+- Scope (DEVELOP, after review): the analysis targets forage loss (frost on
+  open blossom); brood chilling is not analysed and is an option in ADR-002.
 - Resolved (DESIGN): MeteoSwiss SwissMetNet open data (`ch.meteoschweiz.ogd-smn`)
   offers `tre200dn` (2 m air, daily minimum) and `tre005dn` (5 cm above
   grass, daily minimum); licence CC BY, so derived outputs may be committed

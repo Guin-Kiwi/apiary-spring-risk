@@ -50,16 +50,24 @@ Open decisions (record as ADRs once decided):
   (decided in DEPLOY).
 - Persistence: SQLite + SQLAlchemy in the prototype; not yet confirmed.
 - Data processing library (pandas in the prototype) — keep it out of `domain`.
-- Data sources: MeteoSwiss SwissMetNet open data (`ch.meteoschweiz.ogd-smn`,
-  CC BY) for daily minimum temperatures; hive-count source per canton not
-  yet identified. Full inventory follows in UC-001.
+- Frost-day definition and canton risk metric: ADR-002 (proposed, from
+  UC-001's exploration).
+
+## Data sources
+
+| Data | Source / access | Licence | Coverage, granularity |
+|---|---|---|---|
+| Daily air temperature: `tre200dn` (2 m minimum), `tre200d0` (2 m mean), `tre005dn` (5 cm above grass minimum) | MeteoSwiss SwissMetNet open data, collection `ch.meteoschweiz.ogd-smn`: per-station CSV `https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/<abbr>/ogd-smn_<abbr>_d_{historical,recent}.csv` (`;`, Latin-1, `dd.mm.yyyy`) | CC BY 4.0; attribute "Source: MeteoSwiss" | 159 stations; daily; `tre200dn` from 1864 at some stations, `tre005dn` mostly from 1981; `recent` up to yesterday. Raw, not homogenised |
+| Station metadata (canton, elevation, exposition, coordinates) | Same collection: `ogd-smn_meta_stations.csv` | CC BY 4.0 | 25 cantons/areas incl. FL; **AR and NW have no station**; 1–26 stations per canton |
+| Flowering dates (e.g. cherry `mprua65d`, apple `mmald65d`, dandelion `mtaro65d`, 50 % flowering) | MeteoSwiss phenological observations open data, collection `ch.meteoschweiz.ogd-phenology`: per-station CSV `https://data.geo.admin.ch/ch.meteoschweiz.ogd-phenology/<abbr>/ogd-phenology_<abbr>_y.csv` (dates as `YYYYMMDD`) and `ogd-phenology_meta_stations.csv` | CC BY 4.0; attribute "Source: MeteoSwiss" | 175 stations, 26 species, yearly; ~95–110 stations with cherry/apple/dandelion records from 1981 or earlier still running |
+| Beekeepers and colonies per canton | Charrière & Würgler (2024), *Bienenhaltung in der Schweiz und im internationalen Vergleich*, Agroscope Transfer 528, Table 2 (data: AGIS, FOAG), PDF from `ira.agroscope.ch` (publication 56006) | © Agroscope 2024, no open licence: cite; parsed at run time, not redistributed. Republishing derived per-canton figures in the report: to be confirmed | All 26 cantons, 2022 only, 182,300 colonies; no apiary locations or elevations |
 
 ## Structure
 
 | Path | Content |
 |---|---|
 | `notebooks/` | Exploratory analysis (UC-001), committed with outputs |
-| `data/` | Local download cache, git-ignored (planned in UC-001) |
+| `data/` | Local download cache (`data/raw/`), git-ignored |
 | `src/app/domain/` | Entities and business rules |
 | `src/app/application/` | Use cases and ports |
 | `src/app/interfaces/` | Delivery adapters |
@@ -76,14 +84,15 @@ Open decisions (record as ADRs once decided):
 | All checks | `bash scripts/test.sh` |
 | Unit tests | `python -m pytest tests/unit` |
 | Integration tests | `python -m pytest tests/integration` |
+| Run exploration notebook (needs network) | `jupyter nbconvert --to notebook --execute --inplace notebooks/uc-001-explore-frost-risk.ipynb` |
 | Generate report | not available yet; added with the first report use case |
 | Publish | decided in DEPLOY (static host, see ADR-001) |
 
 ## Dependencies
 
 - Runtime: Python 3.12 (`.python-version`), see ADR-000.
-- Manifest: `requirements.txt`: `plotly` (report charts), `pytest`. Further
-  libraries (e.g. pandas, an HTTP client) are added with the slice that needs
-  them.
+- Manifest: `requirements.txt`: `plotly` (report charts), `pandas`,
+  `matplotlib`, `ipykernel`, `nbconvert`, `pypdf`, `scipy` (exploration notebook),
+  `pytest`. Further libraries are added with the slice that needs them.
 - No secrets required so far. Data-source credentials, if any, go in
   environment variables and are documented here by name only.

@@ -1,2 +1,8 @@
 plotly
+pandas
+matplotlib
+ipykernel
+nbconvert
+pypdf
+scipy
 pytest

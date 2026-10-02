@@ -1,6 +1,6 @@
 # TASKS.md
 
-PHASE: 2
+PHASE: 3
 STATUS: done
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
@@ -17,8 +17,10 @@ docs/specs/UC-001-EXPLORE-FROST-RISK.md
 
 ## Current slice
 
-UC-001 designed: no `src/app/` components; notebook + `data/raw/` cache,
-13-station sample, matplotlib/pandas/nbconvert (see UC-001 "Design").
+UC-001 developed: data inventory (`docs/PROJECT.md`), reproducible notebook
+`notebooks/uc-001-explore-frost-risk.ipynb` (revised after external review:
+trend tests, phenology validation, stage-consistent definition F6, canton
+caveats), ADR-002 proposed with options.
 
 ## Acceptance / validation cues
 
@@ -32,7 +34,11 @@ UC-001 designed: no `src/app/` components; notebook + `data/raw/` cache,
   2026-10-02).
 - Decision: no course rubric; standard good practice (CRISP-DM style,
   reproducible, sourced) (owner, 2026-10-02).
-- Open: public hive counts per canton.
+- Resolved: colonies per canton (Agroscope Transfer 528, 2022); flowering
+  dates (MeteoSwiss phenology, CC BY).
+- Open: ADR-002 acceptance (owner): mechanism, frost definition, metric,
+  aggregation, reference period.
+- Open: whether Agroscope-derived figures may be republished in the report.
 - Decision (DESIGN): MeteoSwiss SwissMetNet open data, `tre200dn` and
   `tre005dn`, CC BY; matplotlib for exploration; 13-station sample;
   `notebooks/` to be added to `docs/INDEX.json` (owner, 2026-10-02).
@@ -44,12 +50,15 @@ UC-001 designed: no `src/app/` components; notebook + `data/raw/` cache,
 ## Evidence links
 
 - `docs/specs/UC-001-EXPLORE-FROST-RISK.md`
+- `notebooks/uc-001-explore-frost-risk.ipynb` (section 11: findings)
+- `docs/adr/ADR-002-frost-definition-and-risk-metric.md` (Proposed)
+- Reproducibility: clean re-run from an empty cache (2026-10-02) downloaded
+  45 files and reproduced all 40 text outputs; `bash scripts/test.sh` passes.
 - `docs/adr/ADR-001-static-report-delivery.md`
 
 ## Next smallest step
 
-DEVELOP for UC-001: add dependencies and `data/` ignore, build the notebook
-(download sample, data quality), then the inventory.
+Owner reviews notebook section 11 and decides ADR-002; then VALIDATE UC-001.
 
 ## Backlog
 
