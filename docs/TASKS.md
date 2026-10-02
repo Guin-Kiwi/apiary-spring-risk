@@ -1,6 +1,6 @@
 # TASKS.md
 
-PHASE: 3
+PHASE: 1
 STATUS: done
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
@@ -9,7 +9,9 @@ STATUS: done
 
 Choose a defensible late spring frost definition and canton risk metric
 from explored data and cited sources before implementing it (owner: the
-metric must follow sound data-analytics practice, 2026-10-02).
+metric must follow sound data-analytics practice, 2026-10-02). Iteration 2:
+agree the concepts (frost → forage → colonies) and gather plant-level
+evidence before choosing thresholds.
 
 ## Current Use Case
 
@@ -17,10 +19,9 @@ docs/specs/UC-001-EXPLORE-FROST-RISK.md
 
 ## Current slice
 
-UC-001 developed: data inventory (`docs/PROJECT.md`), reproducible notebook
-`notebooks/uc-001-explore-frost-risk.ipynb` (revised after external review:
-trend tests, phenology validation, stage-consistent definition F6, canton
-caveats), ADR-002 proposed with options.
+UC-001 iteration 2 specified: concept note, forage-plant inventory and
+density-data inventory; ADR-002 paused until the concept note is accepted.
+Iteration 1 (notebook, data inventory) is done, see evidence links.
 
 ## Acceptance / validation cues
 
@@ -36,8 +37,10 @@ caveats), ADR-002 proposed with options.
   reproducible, sourced) (owner, 2026-10-02).
 - Resolved: colonies per canton (Agroscope Transfer 528, 2022); flowering
   dates (MeteoSwiss phenology, CC BY).
-- Open: ADR-002 acceptance (owner): mechanism, frost definition, metric,
-  aggregation, reference period.
+- Decision: widen UC-001 (iteration 2) before deciding ADR-002 (owner,
+  2026-10-02); ADR-002 paused.
+- Open: impact measure ("meaningfully affected"); per-plant thresholds
+  (−1 to −2.2 °C, 5 cm vs 2 m) — to come from the concept note and inventory.
 - Open: whether Agroscope-derived figures may be republished in the report.
 - Decision (DESIGN): MeteoSwiss SwissMetNet open data, `tre200dn` and
   `tre005dn`, CC BY; matplotlib for exploration; 13-station sample;
@@ -58,7 +61,8 @@ caveats), ADR-002 proposed with options.
 
 ## Next smallest step
 
-Owner reviews notebook section 11 and decides ADR-002; then VALIDATE UC-001.
+DESIGN for UC-001 iteration 2: where the concept note and inventories live,
+and which source types to search; then write the concept note first.
 
 ## Backlog
 

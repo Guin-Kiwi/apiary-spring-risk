@@ -12,8 +12,9 @@
 - In scope:
   - ingest historical daily minimum temperatures (MeteoSwiss) and cantonal
     apiary data (apiaries, hive counts, locations)
-  - detect spring frost events (daily minimum ≤ 0 °C in April–June)
-  - compute a normalised frost risk score per canton, weighted by hive density
+  - detect damaging spring frost events for bee forage (definition: ADR-002,
+    from UC-001's concept note and forage-plant inventory)
+  - assess frost risk to bee forage and colonies per canton
   - show trends over recent decades
   - publish results as a static, interactive report (Plotly HTML + data
     files) embedded in or linked from the owner's personal website
@@ -34,7 +35,7 @@ Planned mapping (from the reference prototype's ETL + dashboard):
 
 | Layer | Responsibility |
 |---|---|
-| `domain` | Frost event rule (spring months, 0 °C threshold), canton risk score; pure Python, no pandas/DB |
+| `domain` | Frost event rule and canton risk metric (per ADR-002); pure Python, no pandas/DB |
 | `application` | Use cases: run pipeline (extract → transform → load), query risk per canton; defines repository/source ports |
 | `interfaces` | Delivery: report generator entry point (CLI) that writes the static report |
 | `infrastructure` | MeteoSwiss and apiary-data sources, persistence, Plotly HTML rendering |

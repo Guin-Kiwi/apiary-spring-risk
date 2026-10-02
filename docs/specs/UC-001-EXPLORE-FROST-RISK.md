@@ -2,8 +2,9 @@
 
 ## Goal
 Find out, from real data and sources, what should count as a damaging late
-spring frost for bees and how to score frost risk per canton. Record the
-chosen definition as ADR-002.
+spring frost for bees and how to score frost risk per canton. First agree the
+concepts (how frost reaches colonies through their forage) and the evidence
+for each, then record the chosen definition as ADR-002.
 
 ## Business value
 The frost definition and the risk score are what the whole report rests on.
@@ -24,8 +25,22 @@ being rebuilt.
 - At least two frost-day definitions and at least two canton risk metrics,
   compared on the sample, each with a cited rationale and its effect on the
   canton ranking (sensitivity).
+- **Concept note** (iteration 2): defines hazard, forage timing,
+  vulnerability, exposure and impact on colonies; the harm mechanisms (forage
+  loss, brood chilling, reduced nectar flow); the measurement levels (2 m air,
+  5 cm above grass, soil) and how they relate on frost nights; and lists every
+  assumption with its status (verified with source / assumed / open).
+- **Forage-plant inventory** (iteration 2): the key spring (March–June) bee
+  forage plants in Switzerland, per plant: value for bees (nectar, pollen),
+  flowering weeks by region and elevation, frost sensitivity by development
+  stage, ability to recover or re-flower, and available MeteoSwiss phenology
+  series; each entry cited or marked "no source found".
+- **Density-data inventory** (iteration 2): sources for plant or land-use
+  density per region (e.g. orchards, rapeseed, meadows, forest) with
+  resolution, coverage, licence and access method. Inventory only.
 - ADR-002 proposing the frost definition and risk metric, for the owner to
-  accept.
+  accept — **paused until the concept note is accepted**, then revised from
+  the concept note and inventories.
 
 ### Out of scope
 - Application code in `src/app/` (the chosen metric is implemented in UC-002,
@@ -33,6 +48,9 @@ being rebuilt.
 - A full download of all stations, a production pipeline or persistence.
 - The published report and hosting (ADR-001, later use cases).
 - Forecasts, real-time alerts.
+- Computing density-weighted forage exposure or colony impact (a later use
+  case, if the inventories show the data exists).
+- Field observations or surveys.
 
 ## Actors
 
@@ -66,8 +84,14 @@ implementation starts.
    hive counts) and compute them on the sample.
 7. Compare the candidates: the canton ranking each produces, sensitivity to
    the threshold, biases (station count, record length, elevation).
-8. Write ADR-002 (status Proposed) with the recommendation; the owner accepts
-   or changes it.
+8. Write ADR-002 (status Proposed) with the options. *(Done in iteration 1;
+   paused after review.)*
+9. Write the concept note; the owner reviews and accepts or corrects the
+   concepts and assumptions.
+10. Build the forage-plant inventory from cited guides (beekeeping forage
+    calendars, plant frost-sensitivity guides, MeteoSwiss phenology).
+11. Inventory density data sources per region.
+12. Revise ADR-002's context and options from items 9–11; the owner decides.
 
 ## Alternate / edge flows
 
@@ -80,6 +104,13 @@ implementation starts.
   per station-year.
 - Evidence suggests a different season window than April–June: record it and
   use it in the candidate definitions.
+- No frost-sensitivity source for a forage plant: mark "no source found";
+  do not infer a threshold from another species without labelling it as an
+  assumption.
+- Forage calendars differ by region or source: record each with its source
+  rather than merging them.
+- No density data at a useful resolution: state the gap; ADR-002 then
+  records how risk is presented without it.
 
 ## Errors / failure cases
 
@@ -105,6 +136,21 @@ implementation starts.
   Then at least two frost-day definitions and two risk metrics are compared
   on the sample, each with a cited rationale, its canton ranking and its
   known biases.
+- Given the concept note
+  When the owner reviews it
+  Then every term used in the risk model is defined, each mechanism names
+  the definition it would need, and each assumption is labelled verified
+  (with source), assumed or open; the owner has accepted it.
+- Given the forage-plant inventory
+  When the owner reviews it
+  Then each plant named as important spring forage by at least one cited
+  Swiss or comparable Central European source is listed, with flowering
+  timing, stage-dependent frost sensitivity and recovery, each cited or
+  marked "no source found".
+- Given the density-data inventory
+  When the owner reviews it
+  Then each candidate source lists resolution, coverage, licence and access
+  method, and gaps are stated.
 - Given ADR-002
   When the owner accepts it
   Then it states the frost-day definition, the risk metric with formula,
@@ -132,8 +178,9 @@ E2E: notebook executes top to bottom from a clean environment (command
 documented in `docs/PROJECT.md`)
 
 ### Evidence
-Data inventory in `docs/PROJECT.md`, executed notebook, ADR-002 accepted by
-the owner, `bash scripts/test.sh` output. At VALIDATE, replace this with the
+Data inventory in `docs/PROJECT.md`, executed notebook, accepted concept
+note, forage-plant and density-data inventories, ADR-002 accepted by the
+owner, `bash scripts/test.sh` output. At VALIDATE, replace this with the
 actual results.
 
 ## Open questions / assumptions
@@ -147,6 +194,18 @@ actual results.
   offers `tre200dn` (2 m air, daily minimum) and `tre005dn` (5 cm above
   grass, daily minimum); licence CC BY, so derived outputs may be committed
   with attribution ("Source: MeteoSwiss").
+- Iteration 2 (owner, 2026-10-02): a single frost threshold is not enough
+  to judge harm to colonies; risk depends on which forage plants flower
+  where and when, their stage-dependent sensitivity and their density.
+  Concepts and evidence come before further assumptions.
+- Open: what counts as colonies being "meaningfully affected" (impact
+  measure, e.g. length of a forage gap); to be defined in the concept note.
+- Open: the threshold question (−1 to −2.2 °C at 2 m; 5 cm vs 2 m for
+  low-growing flowers) is decided per plant from the inventory, not globally.
+- To verify (concept note): near-ground air (5 cm above grass) is usually
+  colder than 2 m air on clear, calm nights, while the soil is warmer;
+  dandelion's lower frost impact may come from closing flower heads, its
+  position in the grass and continuous re-flowering rather than warmer air.
 - Assumption: a sample of stations is enough to choose the metric; the full
   dataset is processed in later use cases.
 - Assumption: the analysis follows CRISP-DM's data-understanding step; no
@@ -154,6 +213,8 @@ actual results.
 
 ## Notes for implementation
 
+- Iteration 2 deliverables are documents; their location (e.g.
+  `docs/analysis/`) is settled in DESIGN. No application code.
 - Prototype for reference only:
   github.com/Guin-Kiwi/apiary-spring-creep (`etl/transform.py`).
 
