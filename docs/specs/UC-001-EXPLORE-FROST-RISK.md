@@ -140,11 +140,10 @@ actual results.
 
 - Open: public source of hive or apiary counts per canton (prototype used
   placeholder URLs).
-- Open: which MeteoSwiss product and parameters to use; assumption, to
-  verify: MeteoSwiss open data offers daily minimum air temperature (2 m) and
-  ground-level minimum, which may differ for blossom frost.
-- Open: whether the notebook's executed outputs (derived tables/charts) may
-  be committed under the data licence.
+- Resolved (DESIGN): MeteoSwiss SwissMetNet open data (`ch.meteoschweiz.ogd-smn`)
+  offers `tre200dn` (2 m air, daily minimum) and `tre005dn` (5 cm above
+  grass, daily minimum); licence CC BY, so derived outputs may be committed
+  with attribution ("Source: MeteoSwiss").
 - Assumption: a sample of stations is enough to choose the metric; the full
   dataset is processed in later use cases.
 - Assumption: the analysis follows CRISP-DM's data-understanding step; no
@@ -154,11 +153,34 @@ actual results.
 
 - Prototype for reference only:
   github.com/Guin-Kiwi/apiary-spring-creep (`etl/transform.py`).
-- Notebook location (e.g. `notebooks/`) and a git-ignored data folder
-  (`data/` is not ignored yet) to be settled in DESIGN; `notebooks/` is not
-  yet listed in `docs/INDEX.json` (review-gated).
-- New dependencies (pandas, Jupyter, an HTTP client if needed) are added in
-  this use case; keep them out of `src/app/domain` and `application`
-  (architecture test).
+
+### Design (phase 2, approved by the owner 2026-10-02)
+
+- Components: none in `src/app/`; Clean Architecture layers unchanged.
+  Deliverables are `notebooks/uc-001-explore-frost-risk.ipynb`, the data
+  inventory in `docs/PROJECT.md` and ADR-002.
+- Data access: per-station daily CSVs from
+  `https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/<abbr>/ogd-smn_<abbr>_d_{historical,recent}.csv`
+  (`;`-separated, Latin-1, dates `dd.mm.yyyy`); station metadata
+  `ogd-smn_meta_stations.csv` (canton, elevation, exposition, coordinates).
+  Read with pandas over HTTPS; no extra HTTP client.
+- Cache: downloads go to `data/raw/` (add `data/` to `.gitignore`); the
+  notebook reuses cached files and can re-download.
+- Sample (13 stations): BAS (BL), BER, ABO (BE), GVE (GE), CGI (VD),
+  SIO (VS), LUG, MAG (TI), CHU, DAV (GR), SMA, WAE (ZH), STG (SG);
+  203–1594 m. Comparison period 1981–latest (`tre005dn` starts 1981);
+  trend uses the full `tre200dn` record.
+- Known data facts to handle: station counts per canton range 1–26; NW and
+  AR have no station; FL (Liechtenstein) is included; BAS is in BL, not BS;
+  measurements are not homogenised (state this limitation for trends).
+- Dependencies: add `pandas`, `matplotlib`, `ipykernel`, `nbconvert` to
+  `requirements.txt`. matplotlib for exploration (images render on GitHub);
+  Plotly stays for the report (ADR-001). Keep pandas/plotly out of
+  `src/app/domain` and `application` (architecture test).
+- Execution: `jupyter nbconvert --to notebook --execute --inplace
+  notebooks/uc-001-explore-frost-risk.ipynb`; committed with outputs. Not
+  part of `scripts/test.sh` (needs network).
+- `docs/INDEX.json`: add `notebooks/` to "project" once the folder exists
+  (owner approved; the lifecycle check rejects missing paths).
 - ADR-001: the final output is a static report; ADR-002 should name the
   fields the report needs.

@@ -50,13 +50,16 @@ Open decisions (record as ADRs once decided):
   (decided in DEPLOY).
 - Persistence: SQLite + SQLAlchemy in the prototype; not yet confirmed.
 - Data processing library (pandas in the prototype) — keep it out of `domain`.
-- Data sources: concrete MeteoSwiss dataset and the cantonal apiary source
-  (URL, format, licence) are not yet identified.
+- Data sources: MeteoSwiss SwissMetNet open data (`ch.meteoschweiz.ogd-smn`,
+  CC BY) for daily minimum temperatures; hive-count source per canton not
+  yet identified. Full inventory follows in UC-001.
 
 ## Structure
 
 | Path | Content |
 |---|---|
+| `notebooks/` | Exploratory analysis (UC-001), committed with outputs |
+| `data/` | Local download cache, git-ignored (planned in UC-001) |
 | `src/app/domain/` | Entities and business rules |
 | `src/app/application/` | Use cases and ports |
 | `src/app/interfaces/` | Delivery adapters |

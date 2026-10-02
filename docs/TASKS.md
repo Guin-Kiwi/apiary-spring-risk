@@ -1,6 +1,6 @@
 # TASKS.md
 
-PHASE: 1
+PHASE: 2
 STATUS: done
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
@@ -17,8 +17,8 @@ docs/specs/UC-001-EXPLORE-FROST-RISK.md
 
 ## Current slice
 
-UC-001 specified: data inventory, exploratory notebook on a station sample,
-comparison of frost definitions and risk metrics, ADR-002 proposal.
+UC-001 designed: no `src/app/` components; notebook + `data/raw/` cache,
+13-station sample, matplotlib/pandas/nbconvert (see UC-001 "Design").
 
 ## Acceptance / validation cues
 
@@ -32,8 +32,10 @@ comparison of frost definitions and risk metrics, ADR-002 proposal.
   2026-10-02).
 - Decision: no course rubric; standard good practice (CRISP-DM style,
   reproducible, sourced) (owner, 2026-10-02).
-- Open: public hive counts per canton; MeteoSwiss product and parameters;
-  licence for committing derived outputs.
+- Open: public hive counts per canton.
+- Decision (DESIGN): MeteoSwiss SwissMetNet open data, `tre200dn` and
+  `tre005dn`, CC BY; matplotlib for exploration; 13-station sample;
+  `notebooks/` to be added to `docs/INDEX.json` (owner, 2026-10-02).
 - Assumption: requirements come from the prototype
   github.com/Guin-Kiwi/apiary-spring-creep; its code is not copied.
 - Decision: static Plotly report (ADR-001); MIT licence; solo project,
@@ -46,8 +48,8 @@ comparison of frost definitions and risk metrics, ADR-002 proposal.
 
 ## Next smallest step
 
-DESIGN for UC-001: settle notebook and data folder locations, dependencies
-and the station sample.
+DEVELOP for UC-001: add dependencies and `data/` ignore, build the notebook
+(download sample, data quality), then the inventory.
 
 ## Backlog
 
