@@ -5,39 +5,79 @@ the project created from this template.
 
 ## Purpose
 
-- Project name:
-- User or organisational problem:
-- Intended users:
+- Project name: Apiary Spring Risk
+- User or organisational problem: late spring frosts (April–June) can harm
+  bee colonies. Beekeepers and cantonal bee-health stakeholders lack a simple
+  view of which Swiss cantons are most exposed, and how that exposure relates
+  to hive density and changes over time.
+- Intended users: beekeepers and bee-health / agricultural stakeholders in
+  Switzerland (assumption, derived from the reference project).
 - In scope:
-- Out of scope:
+  - ingest historical daily minimum temperatures (MeteoSwiss) and cantonal
+    apiary data (apiaries, hive counts, locations)
+  - detect spring frost events (daily minimum ≤ 0 °C in April–June)
+  - compute a normalised frost risk score per canton, weighted by hive density
+  - show trends over recent decades
+  - present results visually (dashboard / interactive view)
+- Out of scope (until specified): real-time weather alerts, forecasts,
+  per-hive inspection records, user accounts.
+- Reference: prior prototype
+  [Guin-Kiwi/apiary-spring-creep](https://github.com/Guin-Kiwi/apiary-spring-creep)
+  (ETL in `etl/`, Streamlit dashboard, SQLite via SQLAlchemy). It is used as
+  requirements input only; code is re-implemented here through TDD.
 
 ## Architecture
 
-Describe the selected architecture, boundaries and dependency direction. If
-Clean Architecture is used, keep dependencies pointing inward:
+Clean Architecture; dependencies point inward:
 
 `domain ← application ← interfaces ← infrastructure`
 
-Record important framework, data-store and integration decisions here.
+Planned mapping (from the reference prototype's ETL + dashboard):
+
+| Layer | Responsibility |
+|---|---|
+| `domain` | Frost event rule (spring months, 0 °C threshold), canton risk score; pure Python, no pandas/DB |
+| `application` | Use cases: run pipeline (extract → transform → load), query risk per canton; defines repository/source ports |
+| `interfaces` | Delivery: UI/API/CLI adapter (framework **not yet decided**) |
+| `infrastructure` | MeteoSwiss and apiary-data sources, persistence (SQLite candidate) |
+
+Open decisions (record as ADRs once decided):
+
+- Delivery framework: unknown. Candidates: Streamlit (used by the prototype),
+  FastAPI (template default), CLI.
+- Persistence: SQLite + SQLAlchemy in the prototype; not yet confirmed.
+- Data processing library (pandas in the prototype) — keep it out of `domain`.
+- Data sources: concrete MeteoSwiss dataset and the cantonal apiary source
+  (URL, format, licence) are not yet identified.
 
 ## Structure
 
-Document the meaningful source and test directories once they exist. Reuse the
-existing repository structure where it is compatible with the selected stack.
+| Path | Content |
+|---|---|
+| `src/app/domain/` | Entities and business rules |
+| `src/app/application/` | Use cases and ports |
+| `src/app/interfaces/` | Delivery adapters |
+| `src/app/infrastructure/` | Data sources, persistence |
+| `tests/unit/` | Unit tests, incl. `test_architecture.py` (dependency rule) |
+| `tests/integration/` | Adapter/infrastructure tests |
+| `tests/e2e/` | End-to-end tests |
 
 ## Commands
 
-Document the commands for the selected stack:
-
 | Activity | Command |
 |---|---|
-| Install | `TBD` |
-| Unit tests | `TBD` |
-| Integration tests | `TBD` |
-| Run locally | `TBD` |
+| Install | `pip install -r requirements.txt` |
+| All checks | `bash scripts/test.sh` |
+| Unit tests | `python -m pytest tests/unit` |
+| Integration tests | `python -m pytest tests/integration` |
+| Run locally | `TBD` (depends on framework decision) |
 | Build/release | `TBD` |
 
 ## Dependencies
 
-List the dependency manifest and runtime versions. Never commit credentials or
-secrets; document required secret names and configuration variables only.
+- Runtime: Python 3.12 (`.python-version`), see ADR-000.
+- Manifest: `requirements.txt`, currently the template's FastAPI default
+  profile (`fastapi`, `uvicorn[standard]`, `pytest`, `httpx`). Adjust it once
+  the delivery framework is decided.
+- No secrets required so far. Data-source credentials, if any, go in
+  environment variables and are documented here by name only.

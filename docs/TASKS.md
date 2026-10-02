@@ -1,49 +1,60 @@
 # TASKS.md
 
 PHASE: 0
-STATUS: ready
+STATUS: blocked
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
 
 ## Active objective
 
-This repository starts as the AI-SDLC template. First objective: define the
-project — complete `docs/PROJECT.md` (purpose, architecture, commands) for
-this specific project. Once it reflects a real project, strip the
-template-only commentary per `skills/ai-sdlc-0-bootstrap` step 5, then replace
-this paragraph with the actual current objective.
+Bootstrap the Apiary Spring Risk project: late spring frost risk for Swiss
+cantonal apiaries (see `docs/PROJECT.md`). Purpose and structure are recorded;
+the delivery framework and template cleanup are still open.
 
 ## Current Use Case
 
-docs/specs/UC-[NNN]-[NAME].md
+None yet (phase 0).
 
 ## Current slice
 
-Describe the smallest vertical step being worked right now.
+Phase 0: project context in `docs/PROJECT.md`, root profile files committed.
 
 ## Acceptance / validation cues
 
-- What should be true when this slice is done?
-- What evidence will show that it is done?
-- Which artefact, test, review note, or document should hold that evidence?
+- `docs/PROJECT.md` states purpose, architecture, structure, commands, dependencies.
+- `bash scripts/test.sh` passes.
+- Framework decided and `requirements.txt` adjusted (open).
+- Template cleanup (bootstrap step 5) done with human approval (open).
 
 ## Blockers / assumptions / decisions
 
-- Blockers that stop progress.
-- Assumptions currently being made.
-- Decisions that changed direction, scope, or sequencing.
+- Blocked: delivery framework unknown (user, 2026-10-02). Candidates: Streamlit
+  (prototype), FastAPI (template default), CLI.
+- Blocked: template cleanup (README, docs/future/, CITATION.cff, .zenodo.json,
+  CODEOWNERS, LICENSE section 2) deferred by the user.
+- Assumption: requirements come from the prototype
+  github.com/Guin-Kiwi/apiary-spring-creep; its code is not copied.
+- Assumption: intended users are Swiss beekeepers / bee-health stakeholders.
+- Open: concrete MeteoSwiss dataset and cantonal apiary data source.
+- Decision: solo project; commits to `main` allowed (user, 2026-10-02).
 
 ## Evidence links
 
-- Link to the relevant spec, design note, test result, PR note, or review comment.
+- `docs/PROJECT.md`
+- `bash scripts/test.sh` output (2026-10-02): all tests pass.
 
 ## Next smallest step
 
-State the next concrete action that should happen if work resumes later.
+Decide the delivery framework (or explicitly defer it) and do the template
+cleanup; then SPECIFY UC-001: frost event detection + canton risk score as a
+pure domain slice (framework-independent).
 
 ## Backlog
 
-- docs/specs/UC-[NNN]-[NAME].md
+- UC-001 frost events and canton risk score (domain)
+- Data ingestion from MeteoSwiss and apiary source
+- Risk view / dashboard
+- Frost frequency trend over decades
 
 ## Working agreement
 
