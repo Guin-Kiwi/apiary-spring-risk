@@ -18,7 +18,8 @@ the project created from this template.
   - detect spring frost events (daily minimum ≤ 0 °C in April–June)
   - compute a normalised frost risk score per canton, weighted by hive density
   - show trends over recent decades
-  - present results visually (dashboard / interactive view)
+  - publish results as a static, interactive report (Plotly HTML + data
+    files) embedded in or linked from the owner's personal website
 - Out of scope (until specified): real-time weather alerts, forecasts,
   per-hive inspection records, user accounts.
 - Reference: prior prototype
@@ -38,13 +39,18 @@ Planned mapping (from the reference prototype's ETL + dashboard):
 |---|---|
 | `domain` | Frost event rule (spring months, 0 °C threshold), canton risk score; pure Python, no pandas/DB |
 | `application` | Use cases: run pipeline (extract → transform → load), query risk per canton; defines repository/source ports |
-| `interfaces` | Delivery: UI/API/CLI adapter (framework **not yet decided**) |
-| `infrastructure` | MeteoSwiss and apiary-data sources, persistence (SQLite candidate) |
+| `interfaces` | Delivery: report generator entry point (CLI) that writes the static report |
+| `infrastructure` | MeteoSwiss and apiary-data sources, persistence, Plotly HTML rendering |
+
+Delivery: static report, no server-side Python in production
+([ADR-001](adr/ADR-001-static-report-delivery.md)). The pipeline runs offline
+or in CI; generated files go to a static host and are embedded (iframe) in or
+linked from the owner's site-builder website.
 
 Open decisions (record as ADRs once decided):
 
-- Delivery framework: unknown. Candidates: Streamlit (used by the prototype),
-  FastAPI (template default), CLI.
+- Static host for the report (e.g. GitHub Pages) and publishing automation
+  (decided in DEPLOY).
 - Persistence: SQLite + SQLAlchemy in the prototype; not yet confirmed.
 - Data processing library (pandas in the prototype) — keep it out of `domain`.
 - Data sources: concrete MeteoSwiss dataset and the cantonal apiary source
@@ -70,14 +76,14 @@ Open decisions (record as ADRs once decided):
 | All checks | `bash scripts/test.sh` |
 | Unit tests | `python -m pytest tests/unit` |
 | Integration tests | `python -m pytest tests/integration` |
-| Run locally | `TBD` (depends on framework decision) |
+| Run locally | `TBD` (report generator entry point, built in DEVELOP) |
 | Build/release | `TBD` |
 
 ## Dependencies
 
 - Runtime: Python 3.12 (`.python-version`), see ADR-000.
-- Manifest: `requirements.txt`, currently the template's FastAPI default
-  profile (`fastapi`, `uvicorn[standard]`, `pytest`, `httpx`). Adjust it once
-  the delivery framework is decided.
+- Manifest: `requirements.txt`: `plotly` (report charts), `pytest`. Further
+  libraries (e.g. pandas, an HTTP client) are added with the slice that needs
+  them.
 - No secrets required so far. Data-source credentials, if any, go in
   environment variables and are documented here by name only.

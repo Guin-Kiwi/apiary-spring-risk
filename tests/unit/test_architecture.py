@@ -2,7 +2,7 @@
 
 domain <- application <- interfaces <- infrastructure
 A layer may import only itself and layers further in; domain and application
-must not import web or database frameworks.
+must not import web, database, dataframe or charting frameworks.
 """
 
 import ast
@@ -13,7 +13,7 @@ import unittest
 
 APP = pathlib.Path(__file__).resolve().parents[2] / "src" / "app"
 LAYERS = ["domain", "application", "interfaces", "infrastructure"]
-FRAMEWORKS = {"fastapi", "starlette", "sqlalchemy", "flask", "django"}
+FRAMEWORKS = {"fastapi", "starlette", "sqlalchemy", "flask", "django", "pandas", "plotly"}
 FRAMEWORK_FREE = {"domain", "application"}
 
 
@@ -56,6 +56,19 @@ class DependencyRuleTests(unittest.TestCase):
         self.assertEqual(len(found), 2)
         self.assertIn("domain imports outer layer app.infrastructure.db", found[0])
         self.assertIn("application imports framework sqlalchemy", found[1])
+
+    def test_detects_report_and_dataframe_libraries_in_inner_layers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            app = pathlib.Path(tmp)
+            for layer in LAYERS:
+                (app / layer).mkdir()
+            (app / "domain" / "risk.py").write_text("import pandas as pd\n")
+            (app / "application" / "report.py").write_text("import plotly.express as px\n")
+            (app / "infrastructure" / "report.py").write_text("import plotly.express as px\n")
+            found = violations(app)
+        self.assertEqual(len(found), 2)
+        self.assertIn("domain imports framework pandas", found[0])
+        self.assertIn("application imports framework plotly.express", found[1])
 
 
 if __name__ == "__main__":

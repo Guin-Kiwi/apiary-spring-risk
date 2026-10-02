@@ -13,21 +13,16 @@
       }
     },
     {
-      "name": "FastAPI: configure entry point",
+      "name": "Report: generate static report (configure entry point)",
       "type": "debugpy",
       "request": "launch",
-      "module": "uvicorn",
+      "module": "app.interfaces.report",
       "cwd": "${workspaceFolder}",
-      "args": [
-        "app.main:app",
-        "--reload"
-      ],
       "env": {
         "PYTHONPATH": "${workspaceFolder}/src"
       },
       "console": "integratedTerminal",
-      "justMyCode": true,
-      "subProcess": true
+      "justMyCode": true
     }
   ]
 }

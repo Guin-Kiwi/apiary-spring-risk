@@ -8,8 +8,8 @@ STATUS: blocked
 ## Active objective
 
 Bootstrap the Apiary Spring Risk project: late spring frost risk for Swiss
-cantonal apiaries (see `docs/PROJECT.md`). Purpose and structure are recorded;
-the delivery framework and template cleanup are still open.
+cantonal apiaries (see `docs/PROJECT.md`). Purpose, structure and delivery
+(static report, ADR-001) are recorded; template cleanup is still open.
 
 ## Current Use Case
 
@@ -23,13 +23,13 @@ Phase 0: project context in `docs/PROJECT.md`, root profile files committed.
 
 - `docs/PROJECT.md` states purpose, architecture, structure, commands, dependencies.
 - `bash scripts/test.sh` passes.
-- Framework decided and `requirements.txt` adjusted (open).
+- Delivery decided (ADR-001) and `requirements.txt` adjusted (done).
 - Template cleanup (bootstrap step 5) done with human approval (open).
 
 ## Blockers / assumptions / decisions
 
-- Blocked: delivery framework unknown (user, 2026-10-02). Candidates: Streamlit
-  (prototype), FastAPI (template default), CLI.
+- Decision: static Plotly report embedded in the owner's site-builder website
+  (ADR-001, user, 2026-10-02).
 - Blocked: template cleanup (README, docs/future/, CITATION.cff, .zenodo.json,
   CODEOWNERS, LICENSE section 2) deferred by the user.
 - Assumption: requirements come from the prototype
@@ -41,19 +41,20 @@ Phase 0: project context in `docs/PROJECT.md`, root profile files committed.
 ## Evidence links
 
 - `docs/PROJECT.md`
+- `docs/adr/ADR-001-static-report-delivery.md`
 - `bash scripts/test.sh` output (2026-10-02): all tests pass.
 
 ## Next smallest step
 
-Decide the delivery framework (or explicitly defer it) and do the template
-cleanup; then SPECIFY UC-001: frost event detection + canton risk score as a
+Do the template cleanup (bootstrap step 5); then SPECIFY UC-001: frost event detection + canton risk score as a
 pure domain slice (framework-independent).
 
 ## Backlog
 
 - UC-001 frost events and canton risk score (domain)
 - Data ingestion from MeteoSwiss and apiary source
-- Risk view / dashboard
+- Static report generation (Plotly HTML + data files)
+- Publishing to a static host and embedding in the personal website (DEPLOY)
 - Frost frequency trend over decades
 
 ## Working agreement
