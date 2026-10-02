@@ -1,64 +1,60 @@
 # TASKS.md
 
-PHASE: 0
+PHASE: 1
 STATUS: done
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
 
 ## Active objective
 
-Bootstrap the Apiary Spring Risk project: late spring frost risk for Swiss
-cantonal apiaries (see `docs/PROJECT.md`). Purpose, structure and delivery
-(static report, ADR-001) are recorded; template cleanup is done. Bootstrap is
-complete; next is SPECIFY for UC-001.
+Choose a defensible late spring frost definition and canton risk metric
+from explored data and cited sources before implementing it (owner: the
+metric must follow sound data-analytics practice, 2026-10-02).
 
 ## Current Use Case
 
-None yet (phase 0).
+docs/specs/UC-001-EXPLORE-FROST-RISK.md
 
 ## Current slice
 
-Phase 0 complete: project context, delivery decision, template cleanup,
-MIT licence.
+UC-001 specified: data inventory, exploratory notebook on a station sample,
+comparison of frost definitions and risk metrics, ADR-002 proposal.
 
 ## Acceptance / validation cues
 
-- `docs/PROJECT.md` states purpose, architecture, structure, commands, dependencies.
-- `bash scripts/test.sh` passes.
-- Delivery decided (ADR-001) and `requirements.txt` adjusted (done).
-- Template cleanup (bootstrap step 5) done with human approval (done).
+- See acceptance criteria in `docs/specs/UC-001-EXPLORE-FROST-RISK.md`.
+- Evidence: inventory in `docs/PROJECT.md`, executed notebook, ADR-002
+  accepted, `bash scripts/test.sh` passing.
 
 ## Blockers / assumptions / decisions
 
-- Decision: static Plotly report embedded in the owner's site-builder website
-  (ADR-001, user, 2026-10-02).
-- Decision: project licence MIT (LICENSE section 2); CITATION.cff replaced
-  with project metadata; .zenodo.json removed; docs/future/ kept as
-  non-binding skill-design notes (user, 2026-10-02).
+- Decision: exploration first; the metric is implemented in UC-002 (owner,
+  2026-10-02).
+- Decision: no course rubric; standard good practice (CRISP-DM style,
+  reproducible, sourced) (owner, 2026-10-02).
+- Open: public hive counts per canton; MeteoSwiss product and parameters;
+  licence for committing derived outputs.
 - Assumption: requirements come from the prototype
   github.com/Guin-Kiwi/apiary-spring-creep; its code is not copied.
-- Assumption: intended users are Swiss beekeepers / bee-health stakeholders.
-- Open: concrete MeteoSwiss dataset and cantonal apiary data source.
-- Decision: solo project; commits to `main` allowed (user, 2026-10-02).
+- Decision: static Plotly report (ADR-001); MIT licence; solo project,
+  commits to `main` allowed when the owner allows it (2026-10-02).
 
 ## Evidence links
 
-- `docs/PROJECT.md`
+- `docs/specs/UC-001-EXPLORE-FROST-RISK.md`
 - `docs/adr/ADR-001-static-report-delivery.md`
-- `bash scripts/test.sh` output (2026-10-02): all tests pass.
 
 ## Next smallest step
 
-SPECIFY UC-001: frost event detection + canton risk score as a
-pure domain slice (framework-independent).
+DESIGN for UC-001: settle notebook and data folder locations, dependencies
+and the station sample.
 
 ## Backlog
 
-- UC-001 frost events and canton risk score (domain)
-- Data ingestion from MeteoSwiss and apiary source
+- UC-002 implement the chosen frost/risk metric as domain rules (TDD)
+- Data ingestion from MeteoSwiss and hive-count source
 - Static report generation (Plotly HTML + data files)
 - Publishing to a static host and embedding in the personal website (DEPLOY)
-- Frost frequency trend over decades
 
 ## Working agreement
 
