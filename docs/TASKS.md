@@ -1,7 +1,7 @@
 # TASKS.md
 
 PHASE: 0
-STATUS: blocked
+STATUS: done
 
 (0=Bootstrap | 1=Specify | 2=Design | 3=Develop | 4=Validate | 5=Deploy)
 
@@ -9,7 +9,8 @@ STATUS: blocked
 
 Bootstrap the Apiary Spring Risk project: late spring frost risk for Swiss
 cantonal apiaries (see `docs/PROJECT.md`). Purpose, structure and delivery
-(static report, ADR-001) are recorded; template cleanup is still open.
+(static report, ADR-001) are recorded; template cleanup is done. Bootstrap is
+complete; next is SPECIFY for UC-001.
 
 ## Current Use Case
 
@@ -17,21 +18,23 @@ None yet (phase 0).
 
 ## Current slice
 
-Phase 0: project context in `docs/PROJECT.md`, root profile files committed.
+Phase 0 complete: project context, delivery decision, template cleanup,
+MIT licence.
 
 ## Acceptance / validation cues
 
 - `docs/PROJECT.md` states purpose, architecture, structure, commands, dependencies.
 - `bash scripts/test.sh` passes.
 - Delivery decided (ADR-001) and `requirements.txt` adjusted (done).
-- Template cleanup (bootstrap step 5) done with human approval (open).
+- Template cleanup (bootstrap step 5) done with human approval (done).
 
 ## Blockers / assumptions / decisions
 
 - Decision: static Plotly report embedded in the owner's site-builder website
   (ADR-001, user, 2026-10-02).
-- Blocked: template cleanup (README, docs/future/, CITATION.cff, .zenodo.json,
-  CODEOWNERS, LICENSE section 2) deferred by the user.
+- Decision: project licence MIT (LICENSE section 2); CITATION.cff replaced
+  with project metadata; .zenodo.json removed; docs/future/ kept as
+  non-binding skill-design notes (user, 2026-10-02).
 - Assumption: requirements come from the prototype
   github.com/Guin-Kiwi/apiary-spring-creep; its code is not copied.
 - Assumption: intended users are Swiss beekeepers / bee-health stakeholders.
@@ -46,7 +49,7 @@ Phase 0: project context in `docs/PROJECT.md`, root profile files committed.
 
 ## Next smallest step
 
-Do the template cleanup (bootstrap step 5); then SPECIFY UC-001: frost event detection + canton risk score as a
+SPECIFY UC-001: frost event detection + canton risk score as a
 pure domain slice (framework-independent).
 
 ## Backlog

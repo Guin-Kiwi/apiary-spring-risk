@@ -17,6 +17,5 @@ AGENTS.md
 CLAUDE.md
 CONTRIBUTING.md
 CITATION.cff
-.zenodo.json
 pytest.ini
 **/__pycache__

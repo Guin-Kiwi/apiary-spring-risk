@@ -1,8 +1,5 @@
 # PROJECT.md
 
-Complete this document during **BOOTSTRAP**. Keep it concise and specific to
-the project created from this template.
-
 ## Purpose
 
 - Project name: Apiary Spring Risk
@@ -76,8 +73,8 @@ Open decisions (record as ADRs once decided):
 | All checks | `bash scripts/test.sh` |
 | Unit tests | `python -m pytest tests/unit` |
 | Integration tests | `python -m pytest tests/integration` |
-| Run locally | `TBD` (report generator entry point, built in DEVELOP) |
-| Build/release | `TBD` |
+| Generate report | not available yet; added with the first report use case |
+| Publish | decided in DEPLOY (static host, see ADR-001) |
 
 ## Dependencies
 
